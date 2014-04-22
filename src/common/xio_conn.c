@@ -1720,6 +1720,9 @@ static int xio_conn_flush_tx_queue(struct xio_conn *conn)
 	return 0;
 }
 
+#define list_first_entry_or_null(ptr, type, member) \
+	(!list_empty(ptr) ? list_first_entry(ptr, type, member) : NULL)
+
 /*---------------------------------------------------------------------------*/
 /* xio_conn_xmit							     */
 /*---------------------------------------------------------------------------*/
