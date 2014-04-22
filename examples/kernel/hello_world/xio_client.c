@@ -267,6 +267,7 @@ static int xio_client_main(void *data)
 
 	/* normal exit phase */
 	printk("exit signaled\n");
+    atomic_set(&module_state, 1);
 
 	/* free the message */
 	for (i = 0; i < QUEUE_DEPTH; i++) {
