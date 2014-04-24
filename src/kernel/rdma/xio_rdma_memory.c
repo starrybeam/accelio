@@ -178,7 +178,6 @@ int xio_map_work_req(struct ib_device *ib_dev, struct xio_work_req *xd,
 	}
 	for (i = 0; i < nents; i++) {
 		xd->sge[i].addr   = ib_sg_dma_address(ib_dev, &xd->sgl[i]);
-        ERROR_LOG("intdex :%d, sgl%p, dma addr:%p\n", i, &xd->sgl[i], xd->sge[i].addr);
 		xd->sge[i].length = ib_sg_dma_len(ib_dev, &xd->sgl[i]);
 	}
 	xd->mapped = nents;

@@ -67,7 +67,7 @@
 
 /* pr_devel() should produce zero code unless DEBUG is defined */
 #define TRACE_LOG(fmt, ...) \
-	pr_devel("%s %d %s " pr_fmt(fmt), \
+	pr_INFO("%s %d %s " pr_fmt(fmt), \
 		__FILE__, __LINE__, __func__,\
 		## __VA_ARGS__)
 
