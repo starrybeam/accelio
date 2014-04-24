@@ -136,14 +136,16 @@ static int xio_post_send(struct xio_rdma_transport *rdma_hndl,
 	struct ib_send_wr	*bad_wr;
 	int			retval, nr_posted;
 
-/*
-	ERROR_LOG("num_sge:%d, len1:%d, len2:%d, send_flags:%d\n",
+
+	ERROR_LOG("num_sge:%d, addr1:%p, len1:%d, addr2:%p, len2:%d, send_flags:%d\n",
 			xio_send->send_wr.num_sge,
+			xio_send->send_wr.sg_list[0].addr,
 			xio_send->send_wr.sg_list[0].length,
+			xio_send->send_wr.sg_list[1].addr,
 			xio_send->send_wr.sg_list[1].length,
 			xio_send->send_wr.send_flags);
 
-*/
+
 
 	retval = ib_post_send(rdma_hndl->qp, &xio_send->send_wr, &bad_wr);
 	if (likely(!retval)) {

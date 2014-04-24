@@ -129,8 +129,9 @@ static int xio_rdma_context_shutdown(struct xio_transport_base *trans_hndl,
 	}
 
 	tcq = rdma_hndl->tcq;
+    ERROR_LOG("trans_hndl:%p, tcq:%p", trans_hndl, tcq);
 	/* tcq is a context observer unreg it */
-	xio_context_unreg_observer(ctx, (void *) tcq);
+	//xio_context_unreg_observer(ctx, (void *) tcq);
 
 	xio_cq_release(tcq);
 
@@ -166,6 +167,7 @@ static struct xio_cq *xio_cq_init(struct xio_device *dev,
 	 * the address resolved on the same device than the same
 	 * CQ is used
 	 */
+    ERROR_LOG("dev:%p, ctx:%p\n", dev, ctx);
 	read_lock_bh(&dev->cq_lock);
  	list_for_each_entry(tcq, &dev->cq_list, cq_list_entry) {
 		if (tcq->ctx == ctx) {
@@ -258,8 +260,8 @@ static struct xio_cq *xio_cq_init(struct xio_device *dev,
 	write_unlock_bh(&dev->cq_lock);
 
 	/* set the tcq to be the observer for context events */
-	XIO_OBSERVER_INIT(&tcq->observer, tcq, xio_on_context_event);
-	xio_context_reg_observer(ctx, &tcq->observer);
+	//XIO_OBSERVER_INIT(&tcq->observer, tcq, xio_on_context_event);
+	//xio_context_reg_observer(ctx, &tcq->observer);
 
 	return tcq;
 
@@ -285,6 +287,9 @@ static void xio_cq_release(struct xio_cq *tcq)
 	struct xio_rdma_transport *rdma_hndl, *tmp_rdma_hndl;
 	int retval;
 
+    ERROR_LOG("tcq:%p\n", tcq);
+    ERROR_LOG("tcq->dev:%p\n", tcq->dev);
+    ERROR_LOG("tcq->dev->cq_lock:%p\n", tcq->dev->cq_lock);
 	write_lock_bh(&tcq->dev->cq_lock);
 	list_del_init(&tcq->cq_list_entry);
 	write_unlock_bh(&tcq->dev->cq_lock);
@@ -582,6 +587,8 @@ static int xio_setup_qp(struct xio_rdma_transport *rdma_hndl)
 	rdma_hndl->qp		= rdma_hndl->cm_id->qp;
 	rdma_hndl->sqe_avail	= MAX_SEND_WR;
 
+    ERROR_LOG("rdma_hndl:%p, dev:%p, tcq:%p, qp:%p\n",
+            rdma_hndl, rdma_hndl->dev, rdma_hndl->tcq, rdma_hndl->qp);
 	memset(&qp_attr, 0, sizeof(qp_attr));
 	retval = ib_query_qp(rdma_hndl->qp, &qp_attr, 0, &qp_init_attr);
 	if (retval)
@@ -663,6 +670,8 @@ static void xio_txd_init(struct xio_work_req *txd,
 	sg_init_table(txd->sgl, XIO_MAX_IOV + 1);
 
 	sg_set_page(txd->sgl, virt_to_page(buf), size, offset_in_page(buf));
+    ERROR_LOG("txd buf:%p, &sgl[0]:%p, &sgl[1]:%p, size:%d\n",
+            buf, &txd->sgl[0], &txd->sgl[1], size);
 	txd->nents  = 1;
 	txd->mapped = 0;
 
