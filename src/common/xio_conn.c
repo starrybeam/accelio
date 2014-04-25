@@ -957,7 +957,7 @@ static void xio_conn_release(void *data)
 static void xio_on_context_close(struct xio_conn *conn,
 				 struct xio_context *ctx)
 {
-	TRACE_LOG("xio_on_context_close. conn:%p, ctx:%p\n", conn, ctx);
+	ERROR_LOG("xio_on_context_close. conn:%p, ctx:%p\n", conn, ctx);
 
 	/* remove the conn from table */
 	xio_conns_store_remove(conn->cid);
@@ -1124,7 +1124,7 @@ static void xio_on_conn_closed(struct xio_conn *conn,
 			       union xio_transport_event_data *
 			       event_data)
 {
-	TRACE_LOG("conn:%p - close complete\n", conn);
+	ERROR_LOG("conn:%p - close complete\n", conn);
 
 	if (conn->transport_hndl)
 		xio_transport_unreg_observer(conn->transport_hndl,

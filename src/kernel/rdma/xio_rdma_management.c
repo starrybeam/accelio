@@ -1124,6 +1124,9 @@ static int xio_rdma_primary_pool_free(struct xio_transport_base *t_hndl,
 		(struct xio_rdma_tasks_pool *)pool_dd_data;
 
 	INFO_LOG("kcache(%s) freed\n", rdma_pool->name);
+	ERROR_LOG("hdnl:%p\n", t_hndl);
+	ERROR_LOG("hdnl->dev:%p\n", rdma_hndl->dev);
+	ERROR_LOG("hdnl->dev->fastreg:%p\n", rdma_hndl->dev->fastreg);
 
 	rdma_hndl->dev->fastreg.free_rdma_reg_res(rdma_hndl);
 
