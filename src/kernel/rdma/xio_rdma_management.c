@@ -670,8 +670,6 @@ static void xio_txd_init(struct xio_work_req *txd,
 	sg_init_table(txd->sgl, XIO_MAX_IOV + 1);
 
 	sg_set_page(txd->sgl, virt_to_page(buf), size, offset_in_page(buf));
-    ERROR_LOG("txd buf:%p, &sgl[0]:%p, &sgl[1]:%p, size:%d\n",
-            buf, &txd->sgl[0], &txd->sgl[1], size);
 	txd->nents  = 1;
 	txd->mapped = 0;
 
@@ -1128,7 +1126,9 @@ static int xio_rdma_primary_pool_free(struct xio_transport_base *t_hndl,
 	ERROR_LOG("hdnl->dev:%p\n", rdma_hndl->dev);
 	ERROR_LOG("hdnl->dev->fastreg:%p\n", rdma_hndl->dev->fastreg);
 
-	rdma_hndl->dev->fastreg.free_rdma_reg_res(rdma_hndl);
+    if (rdma_hndl && rdma_hndl->dev) {
+        rdma_hndl->dev->fastreg.free_rdma_reg_res(rdma_hndl);
+    }
 
 	if (rdma_pool->count)
 		ERROR_LOG("pool(%s) not-free(%d)\n",
@@ -1635,8 +1635,8 @@ static struct xio_transport_base *xio_rdma_open(struct xio_transport *transport,
 					    observer);
 
 	/* set the new rdma_hndl to be the observer for context events */
-	XIO_OBSERVER_INIT(&rdma_hndl->observer, rdma_hndl, xio_on_context_event);
-	xio_context_reg_observer(ctx, &rdma_hndl->observer);
+	//XIO_OBSERVER_INIT(&rdma_hndl->observer, rdma_hndl, xio_on_context_event);
+	//xio_context_reg_observer(ctx, &rdma_hndl->observer);
 
 	TRACE_LOG("xio_rdma_open: [new] handle:%p\n", rdma_hndl);
 

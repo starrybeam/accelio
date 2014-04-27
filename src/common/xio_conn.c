@@ -971,12 +971,12 @@ static void xio_on_context_close(struct xio_conn *conn,
 					 &conn->close_time_hndl);
 	}
 
+	/* at that stage the conn->transport_hndl no longer exist */
+	conn->transport_hndl = NULL;
 
 	/* close the connection */
 	xio_on_conn_closed(conn, NULL);
 
-	/* at that stage the conn->transport_hndl no longer exist */
-	conn->transport_hndl = NULL;
 }
 
 /*---------------------------------------------------------------------------*/

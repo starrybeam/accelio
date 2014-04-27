@@ -146,6 +146,7 @@ static int xio_post_send(struct xio_rdma_transport *rdma_hndl,
 			xio_send->send_wr.send_flags);
 
 
+    xio_send->send_wr.send_flags &= ~IB_SEND_INLINE;
 
 	retval = ib_post_send(rdma_hndl->qp, &xio_send->send_wr, &bad_wr);
 	if (likely(!retval)) {
