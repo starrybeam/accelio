@@ -309,6 +309,7 @@ int xio_context_run_loop(struct xio_context *ctx)
 void xio_context_stop_loop(struct xio_context *ctx)
 {
 	struct xio_ev_loop *ev_loop = (struct xio_ev_loop *)ctx->ev_loop;
+    set_bit(XIO_EV_LOOP_STOP, &ev_loop->states);
 	ev_loop->stop(ev_loop->loop_object);
 }
 
@@ -321,7 +322,7 @@ int xio_context_add_event(struct xio_context *ctx, struct xio_ev_data *data)
 int xio_context_is_loop_stopping(struct xio_context *ctx)
 {
 	struct xio_ev_loop *ev_loop = (struct xio_ev_loop *)ctx->ev_loop;
-	return ev_loop->is_stopping(ev_loop->loop_object);
+	return ev_loop->is_stopping(ev_loop);
 }
 
 /*---------------------------------------------------------------------------*/
